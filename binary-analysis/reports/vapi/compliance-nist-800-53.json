@@ -1,0 +1,212 @@
+{
+  "id": "CR-1774380309",
+  "title": "NIST 800-53 Compliance Assessment Report",
+  "framework": "NIST 800-53",
+  "version": "1.0",
+  "organization": "vapi",
+  "generated_at": "2026-03-24T12:25:09.3085226-07:00",
+  "generated_by": "Proscan Binary Scanner v1.0",
+  "period": {
+    "start_date": "2026-03-24T12:22:33.2372578-07:00",
+    "end_date": "2026-03-24T12:25:09.3058285-07:00"
+  },
+  "summary": {
+    "total_controls": 14,
+    "controls_passed": 12,
+    "controls_failed": 0,
+    "controls_partial": 0,
+    "controls_na": 2,
+    "compliance_score": 85.71428571428571,
+    "risk_level": "Low",
+    "remediation_items": 0
+  },
+  "controls": [
+    {
+      "control_id": "AC-3",
+      "control_family": "Access Control",
+      "title": "Access Enforcement",
+      "description": "The system enforces approved authorizations for logical access",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "AC-6",
+      "control_family": "Access Control",
+      "title": "Least Privilege",
+      "description": "The organization employs the principle of least privilege",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "AU-2",
+      "control_family": "Audit and Accountability",
+      "title": "Event Logging",
+      "description": "The organization determines auditable events",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "AU-3",
+      "control_family": "Audit and Accountability",
+      "title": "Content of Audit Records",
+      "description": "The system generates audit records containing required information",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "CA-7",
+      "control_family": "Assessment",
+      "title": "Continuous Monitoring",
+      "description": "The organization develops a continuous monitoring strategy",
+      "status": "N/A",
+      "evidence": [],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": "No automated vulnerability mapping for this control"
+    },
+    {
+      "control_id": "CM-6",
+      "control_family": "Configuration Management",
+      "title": "Configuration Settings",
+      "description": "The organization establishes mandatory configuration settings",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "IA-5",
+      "control_family": "Identification and Authentication",
+      "title": "Authenticator Management",
+      "description": "The organization manages system authenticators",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "RA-5",
+      "control_family": "Risk Assessment",
+      "title": "Vulnerability Scanning",
+      "description": "The organization scans for vulnerabilities",
+      "status": "N/A",
+      "evidence": [],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": "No automated vulnerability mapping for this control"
+    },
+    {
+      "control_id": "SC-8",
+      "control_family": "System and Communications Protection",
+      "title": "Transmission Confidentiality",
+      "description": "The system protects the confidentiality of transmitted information",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "SC-13",
+      "control_family": "System and Communications Protection",
+      "title": "Cryptographic Protection",
+      "description": "The system implements cryptographic mechanisms",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "SC-28",
+      "control_family": "System and Communications Protection",
+      "title": "Protection of Information at Rest",
+      "description": "The system protects the confidentiality and integrity of data at rest",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "SI-2",
+      "control_family": "System and Information Integrity",
+      "title": "Flaw Remediation",
+      "description": "The organization identifies and corrects flaws",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "SI-3",
+      "control_family": "System and Information Integrity",
+      "title": "Malicious Code Protection",
+      "description": "The organization employs malicious code protection",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "SI-10",
+      "control_family": "System and Information Integrity",
+      "title": "Information Input Validation",
+      "description": "The system checks the validity of input",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-24T12:25:09.3085226-07:00",
+      "notes": ""
+    }
+  ],
+  "findings": [],
+  "metadata": {
+    "report_version": "",
+    "scan_ids": null,
+    "target_systems": null,
+    "auditor": "",
+    "approval_status": "",
+    "classification": ""
+  }
+}
