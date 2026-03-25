@@ -1,0 +1,164 @@
+{
+  "id": "CR-1774423024",
+  "title": "OWASP Top 10 Compliance Assessment Report",
+  "framework": "OWASP Top 10",
+  "version": "1.0",
+  "organization": "lpeworkshop",
+  "generated_at": "2026-03-25T00:17:04.7174256-07:00",
+  "generated_by": "Proscan SAST Scanner v1.0",
+  "period": {
+    "start_date": "2026-03-24T22:53:35.5243885-07:00",
+    "end_date": "2026-03-24T22:53:36.5050214-07:00"
+  },
+  "summary": {
+    "total_controls": 10,
+    "controls_passed": 10,
+    "controls_failed": 0,
+    "controls_partial": 0,
+    "controls_na": 0,
+    "compliance_score": 100,
+    "risk_level": "Low",
+    "remediation_items": 0
+  },
+  "controls": [
+    {
+      "control_id": "A01:2021",
+      "control_family": "Access Control",
+      "title": "Broken Access Control",
+      "description": "Restrictions on authenticated users not properly enforced",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A02:2021",
+      "control_family": "Cryptography",
+      "title": "Cryptographic Failures",
+      "description": "Failures related to cryptography leading to data exposure",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A03:2021",
+      "control_family": "Injection",
+      "title": "Injection",
+      "description": "User-supplied data not validated, filtered, or sanitized",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A04:2021",
+      "control_family": "Design",
+      "title": "Insecure Design",
+      "description": "Missing or ineffective security controls by design",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A05:2021",
+      "control_family": "Configuration",
+      "title": "Security Misconfiguration",
+      "description": "Missing appropriate security hardening",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A06:2021",
+      "control_family": "Components",
+      "title": "Vulnerable and Outdated Components",
+      "description": "Using components with known vulnerabilities",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A07:2021",
+      "control_family": "Authentication",
+      "title": "Identification and Authentication Failures",
+      "description": "Confirmation of user identity, authentication, and session management",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A08:2021",
+      "control_family": "Integrity",
+      "title": "Software and Data Integrity Failures",
+      "description": "Code and infrastructure not protecting against integrity violations",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A09:2021",
+      "control_family": "Logging",
+      "title": "Security Logging and Monitoring Failures",
+      "description": "Insufficient logging, detection, monitoring, and active response",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "A10:2021",
+      "control_family": "SSRF",
+      "title": "Server-Side Request Forgery",
+      "description": "Fetching remote resource without validating user-supplied URL",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.7174256-07:00",
+      "notes": ""
+    }
+  ],
+  "findings": [],
+  "metadata": {
+    "report_version": "",
+    "scan_ids": null,
+    "target_systems": null,
+    "auditor": "",
+    "approval_status": "",
+    "classification": ""
+  }
+}

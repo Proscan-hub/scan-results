@@ -1,0 +1,197 @@
+{
+  "id": "CR-1774423024",
+  "title": "PCI-DSS 4.0 Compliance Assessment Report",
+  "framework": "PCI-DSS 4.0",
+  "version": "1.0",
+  "organization": "DSVW",
+  "generated_at": "2026-03-25T00:17:04.8742766-07:00",
+  "generated_by": "Proscan SAST Scanner v1.0",
+  "period": {
+    "start_date": "2026-03-24T21:04:38.2439997-07:00",
+    "end_date": "2026-03-24T21:05:02.2142248-07:00"
+  },
+  "summary": {
+    "total_controls": 13,
+    "controls_passed": 10,
+    "controls_failed": 0,
+    "controls_partial": 0,
+    "controls_na": 3,
+    "compliance_score": 76.92307692307693,
+    "risk_level": "Low",
+    "remediation_items": 0
+  },
+  "controls": [
+    {
+      "control_id": "1.1",
+      "control_family": "Network Security",
+      "title": "Install and Maintain Network Security Controls",
+      "description": "Network security controls installed and maintained",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "2.1",
+      "control_family": "Secure Configuration",
+      "title": "Apply Secure Configurations",
+      "description": "Secure configurations applied to system components",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "3.1",
+      "control_family": "Data Protection",
+      "title": "Protect Stored Account Data",
+      "description": "Stored account data protected",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "4.1",
+      "control_family": "Encryption",
+      "title": "Protect Data with Strong Cryptography",
+      "description": "Strong cryptography protects data during transmission",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "5.1",
+      "control_family": "Malware Protection",
+      "title": "Protect Against Malicious Software",
+      "description": "Systems protected against malicious software",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "6.1",
+      "control_family": "Secure Development",
+      "title": "Develop and Maintain Secure Systems",
+      "description": "Systems developed and maintained securely",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "6.2",
+      "control_family": "Secure Development",
+      "title": "Security in Software Development",
+      "description": "Bespoke software developed securely",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "7.1",
+      "control_family": "Access Control",
+      "title": "Restrict Access by Business Need",
+      "description": "Access restricted by business need to know",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "8.1",
+      "control_family": "Authentication",
+      "title": "Identify Users and Authenticate Access",
+      "description": "Users identified and access authenticated",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "9.1",
+      "control_family": "Physical Access",
+      "title": "Restrict Physical Access",
+      "description": "Physical access to cardholder data restricted",
+      "status": "N/A",
+      "evidence": [],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": "No automated vulnerability mapping for this control"
+    },
+    {
+      "control_id": "10.1",
+      "control_family": "Logging and Monitoring",
+      "title": "Log and Monitor Access",
+      "description": "Log and monitor access to system components and cardholder data",
+      "status": "Compliant",
+      "evidence": [
+        "No related vulnerabilities found during scan"
+      ],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": ""
+    },
+    {
+      "control_id": "11.1",
+      "control_family": "Security Testing",
+      "title": "Test Security Regularly",
+      "description": "Security of systems and networks tested regularly",
+      "status": "N/A",
+      "evidence": [],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": "No automated vulnerability mapping for this control"
+    },
+    {
+      "control_id": "12.1",
+      "control_family": "Security Policy",
+      "title": "Support Information Security Policy",
+      "description": "Information security policy supports security",
+      "status": "N/A",
+      "evidence": [],
+      "finding_ids": [],
+      "test_date": "2026-03-25T00:17:04.8742766-07:00",
+      "notes": "No automated vulnerability mapping for this control"
+    }
+  ],
+  "findings": [],
+  "metadata": {
+    "report_version": "",
+    "scan_ids": null,
+    "target_systems": null,
+    "auditor": "",
+    "approval_status": "",
+    "classification": ""
+  }
+}

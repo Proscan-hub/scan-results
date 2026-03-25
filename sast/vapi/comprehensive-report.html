@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAST Security Report - sast-vapi-1774423024</title>
+<style>
+:root{--bg:#0a1929;--bg2:#0d1b2a;--card:#132337;--border:#1e3a5f;--text:#e0e6ed;--muted:#728da6;--accent:#42a5f5;--green:#66bb6a;--red:#ef5350;--orange:#ffa726;--yellow:#ffd54f;--crit-bg:#d32f2f22;--crit:#ef5350;--high-bg:#f57c0022;--high:#ffa726;--med-bg:#fbc02d22;--med:#ffd54f;--low-bg:#388e3c22;--low:#66bb6a;--info-bg:#1e3a5f;--info:#5bb5f5}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:2rem}
+.container{max-width:1200px;margin:0 auto}
+h1,h2,h3,h4{font-weight:600;margin-bottom:1rem}
+h2{font-size:1.5rem;color:var(--accent);border-bottom:2px solid var(--border);padding-bottom:0.5rem;margin-top:0}
+h3{font-size:1.15rem;color:var(--text)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Header */
+.report-header{text-align:center;padding:2.5rem 1rem 2rem;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.report-header .logo-wrap{margin-bottom:0.75rem}
+.report-header .logo-wrap img{height:80px;width:auto;border-radius:8px}
+.report-header .logo{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent),#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.report-header .title{font-size:2rem;font-weight:700;color:var(--text);margin:0.5rem 0 0.25rem}
+.report-header .subtitle{color:var(--muted);font-size:0.95rem}
+.risk-pill{display:inline-block;padding:6px 18px;border-radius:20px;font-weight:700;font-size:0.8rem;text-transform:uppercase;margin-top:0.75rem}
+
+/* Section */
+.section{background:var(--bg2);border-radius:12px;padding:2rem;margin-bottom:2rem;border:1px solid var(--border)}
+
+/* Severity Cards */
+.sev-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:2rem}
+@media(max-width:768px){.sev-grid{grid-template-columns:repeat(2,1fr)}}
+.sev-card{background:var(--card);border-radius:10px;padding:1.25rem;text-align:center;border:1px solid var(--border)}
+.sev-card .sev-val{font-size:2.5rem;font-weight:800}
+.sev-card .sev-lbl{color:var(--muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;margin-top:0.25rem}
+
+/* Metric boxes */
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:1.5rem 0}
+@media(max-width:768px){.metric-row{grid-template-columns:repeat(2,1fr)}}
+.metric-box{background:var(--card);border-radius:10px;padding:1.25rem;text-align:center;border:1px solid var(--border)}
+.metric-box .m-val{font-size:2rem;font-weight:800}
+.metric-box .m-lbl{color:var(--muted);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.25rem}
+
+/* Stat boxes */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:1rem 0}
+@media(max-width:768px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+.stat-box{background:var(--card);border-radius:8px;padding:1rem;text-align:center;border:1px solid var(--border)}
+.stat-box .s-val{font-size:1.5rem;font-weight:700;color:var(--accent)}
+.stat-box .s-lbl{color:var(--muted);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.25rem}
+
+/* Alert box */
+.alert-box{background:var(--crit-bg);border:1px solid #ef535044;border-radius:8px;padding:1rem 1.25rem;margin-top:1rem;color:var(--crit);font-weight:600;font-size:0.9rem}
+
+/* Methodology grid */
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:768px){.method-grid{grid-template-columns:1fr}}
+.method-box{background:var(--card);border-radius:10px;padding:1.25rem;border:1px solid var(--border)}
+.method-box h4{color:var(--accent);font-size:0.85rem;text-transform:uppercase;margin-bottom:0.75rem;letter-spacing:0.04em}
+.method-box p,.method-box li{color:var(--muted);font-size:0.85rem;line-height:1.7}
+.method-box ul{list-style:none;padding:0}
+.method-box ul li::before{content:"\2022";color:var(--accent);margin-right:0.5rem}
+
+/* Charts */
+.chart-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;align-items:start}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr}}
+.chart-card{background:var(--card);border-radius:10px;padding:1.5rem;border:1px solid var(--border);text-align:center}
+.chart-card h4{color:var(--muted);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:1rem}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{padding:0.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+th{background:var(--card);font-weight:600;color:var(--muted);text-transform:uppercase;font-size:0.7rem;letter-spacing:0.06em}
+tr:hover{background:rgba(66,165,245,0.04)}
+
+/* Badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:9999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.03em}
+.b-crit{background:var(--crit-bg);color:var(--crit);border:1px solid var(--crit)}
+.b-high{background:var(--high-bg);color:var(--high);border:1px solid var(--high)}
+.b-med{background:var(--med-bg);color:var(--med);border:1px solid var(--med)}
+.b-low{background:var(--low-bg);color:var(--low);border:1px solid var(--low)}
+.b-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info)}
+
+/* Progress bar */
+.pbar{height:8px;background:#1e3a5f;border-radius:4px;overflow:hidden;min-width:60px}
+.pbar-fill{height:100%;border-radius:4px}
+
+/* CWE desc row */
+.cwe-desc{background:#0d1b2a;padding:0.75rem 1rem;font-size:0.82rem;color:var(--muted);border-bottom:1px solid var(--border)}
+
+/* Finding cards */
+.finding{background:var(--card);border-radius:10px;margin-bottom:1.75rem;border:1px solid var(--border);overflow:hidden}
+.finding-head{padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem}
+.finding-head .f-title{font-size:1.05rem;font-weight:700}
+.finding-head .f-idx{color:var(--muted);font-size:0.8rem;margin-right:0.5rem}
+.finding-body{padding:0 1.5rem 1.5rem}
+.f-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;padding:1rem;background:#0a1929;border-radius:8px;margin-bottom:1.25rem}
+.f-meta .fm-lbl{display:block;font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px}
+.f-meta .fm-val{font-size:0.9rem;font-weight:600}
+
+/* Code blocks */
+.code-block{background:#080f1a;border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'Fira Code','Consolas','Courier New',monospace;font-size:0.82rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;color:var(--text);line-height:1.6;margin:0.75rem 0}
+.code-vuln{border-left:3px solid var(--crit);background:#1a0a0a}
+.code-safe{border-left:3px solid var(--green);background:#0a1a0a}
+.code-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:0.75rem 0}
+@media(max-width:768px){.code-pair{grid-template-columns:1fr}}
+.code-pair-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.4rem;padding-left:0.25rem}
+.code-pair-label.vuln{color:var(--crit)}
+.code-pair-label.safe{color:var(--green)}
+
+/* Remediation guidance box */
+.remed-box{border:1px solid var(--green);border-left:4px solid var(--green);border-radius:8px;padding:1rem 1.25rem;margin:1rem 0;background:#0a1a1022}
+.remed-box h4{color:var(--green);margin-bottom:0.5rem;font-size:0.9rem}
+.remed-box ol{padding-left:1.25rem;color:var(--muted);font-size:0.85rem}
+.remed-box ol li{margin-bottom:0.3rem}
+
+/* Vuln detail box */
+.vuln-detail{border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin:0.75rem 0;background:#0a192988}
+.vuln-detail h4{color:var(--accent);margin-bottom:0.5rem;font-size:0.9rem}
+.vuln-detail p{color:var(--muted);font-size:0.85rem;line-height:1.6}
+
+/* References row */
+.ref-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem}
+.ref-link{display:inline-block;padding:4px 12px;border-radius:6px;background:var(--info-bg);color:var(--info);font-size:0.75rem;font-weight:600;border:1px solid #1e3a5f}
+
+/* Priority score badge */
+.priority-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;background:#42a5f522;color:var(--accent);border:1px solid var(--accent)}
+
+/* Exploit badge */
+.exploit-active{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;background:var(--crit-bg);color:var(--crit);border:1px solid var(--crit)}
+.exploit-poc{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;background:var(--high-bg);color:var(--high);border:1px solid var(--high)}
+.exploit-none{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.7rem;font-weight:700;background:var(--low-bg);color:var(--low);border:1px solid var(--low)}
+
+/* Architecture / Network Diagram */
+.network-diagram{background:var(--card);border-radius:10px;padding:1.5rem;border:1px solid var(--border);overflow-x:auto}
+.network-diagram svg text{font-family:'Inter','Segoe UI',system-ui,sans-serif}
+
+/* Footer */
+.report-footer{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border);margin-top:2rem}
+.report-footer p{margin:0.25rem 0}
+
+/* Section 12: Print styles */
+@media print{
+  body{background:#fff;color:#111;padding:0.5in}
+  .container{max-width:100%}
+  .section,.finding,.sev-card,.chart-card,.method-box,.metric-box,.stat-box{background:#fff;border-color:#ccc;break-inside:avoid;box-shadow:none}
+  .report-header .logo{-webkit-text-fill-color:#1565c0;color:#1565c0}
+  .report-header .title{color:#111}
+  h2{color:#1565c0;border-bottom-color:#ccc}
+  th{background:#f5f5f5;color:#333}
+  td{color:#333}
+  .badge,.b-crit,.b-high,.b-med,.b-low,.b-info{border:1px solid #999;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .sev-card .sev-val,.metric-box .m-val,.stat-box .s-val{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .pbar,.pbar-fill{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .code-block,.code-vuln,.code-safe{background:#f8f8f8;color:#111;border-color:#ccc}
+  .alert-box{background:#fff0f0;border-color:#e57373;color:#c62828}
+  .remed-box{background:#f0fff0;border-color:#66bb6a}
+  .report-footer{border-top-color:#ccc}
+  svg text{fill:#111 !important}
+  a{color:#1565c0}
+  .risk-pill{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="report-header">
+  <div class="logo-wrap"><div style="font-size:28px;font-weight:800;background:linear-gradient(135deg,#42a5f5,#66bb6a);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ProScan</div></div>
+  <div class="title">SAST Security Report</div>
+  <div class="subtitle">Profile: SAST | Scan: sast-vapi-17 | Generated: Mar 25, 2026 00:17 UTC</div>
+  <div class="risk-pill" style="background:#ef535022;color:#ef5350;border:1px solid #ef5350;">Risk: Critical &#x1f512; 100/100</div>
+</div>
+<div class="sev-grid">
+  <div class="sev-card" style="border-top:3px solid #42a5f5"><div class="sev-val" style="color:#42a5f5">43</div><div class="sev-lbl">Total Findings</div></div>
+  <div class="sev-card" style="border-top:3px solid #ef5350"><div class="sev-val" style="color:#ef5350">0</div><div class="sev-lbl">Critical</div></div>
+  <div class="sev-card" style="border-top:3px solid #ffa726"><div class="sev-val" style="color:#ffa726">39</div><div class="sev-lbl">High</div></div>
+  <div class="sev-card" style="border-top:3px solid #ffd54f"><div class="sev-val" style="color:#ffd54f">0</div><div class="sev-lbl">Medium</div></div>
+  <div class="sev-card" style="border-top:3px solid #66bb6a"><div class="sev-val" style="color:#66bb6a">4</div><div class="sev-lbl">Low</div></div>
+</div>
+<div class="section" style="background:linear-gradient(135deg,var(--bg2) 0%,#122540 100%);border:1px solid var(--accent)">
+  <h2>Executive Summary</h2>
+
+  <div class="metric-row">
+    <div class="metric-box"><div class="m-val" style="color:#ffa726">D</div><div class="m-lbl">Security Grade</div></div>
+    <div class="metric-box"><div class="m-val" style="color:#ef5350">FAIL</div><div class="m-lbl">Policy Status</div></div>
+    <div class="metric-box"><div class="m-val">100</div><div class="m-lbl">Risk Score /100</div></div>
+    <div class="metric-box"><div class="m-val" style="font-size:1.3rem">2.0 weeks</div><div class="m-lbl">Est. Fix Time</div></div>
+  </div>
+
+  <p style="line-height:1.8;margin:1rem 0">The SAST scan identified <strong>43</strong> findings across <strong>vapi</strong>. The overall risk score is <strong>100/100</strong>, classified as <strong>Critical</strong> risk. Security grade: <strong>D</strong>. Policy status: <strong>FAIL</strong>.</p>
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="s-val">0</div><div class="s-lbl">With Known Exploits</div></div>
+    <div class="stat-box"><div class="s-val">0</div><div class="s-lbl">Fixable (Patch Available)</div></div>
+    <div class="stat-box"><div class="s-val">17</div><div class="s-lbl">Unique CWE Types</div></div>
+    <div class="stat-box"><div class="s-val">40</div><div class="s-lbl">Affected Components</div></div>
+  </div>
+</div>
+<div class="section">
+  <h2>Code Analysis Architecture</h2>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem">Visualization of scanned codebase modules, file distribution, and vulnerability hotspots.</p>
+  <div class="network-diagram">
+<svg viewBox="0 0 900 500" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="min-height:400px">
+  <rect width="900" height="500" fill="#0a1929" rx="8"/>
+  <defs>
+    <marker id="arrow-none" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3 L 0 6 Z" fill="#42a5f5"/>
+    </marker>
+    <marker id="arrow-critical" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3 L 0 6 Z" fill="#ef5350"/>
+    </marker>
+    <marker id="arrow-high" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3 L 0 6 Z" fill="#ffa726"/>
+    </marker>
+    <marker id="arrow-medium" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3 L 0 6 Z" fill="#ffd54f"/>
+    </marker>
+    <marker id="arrow-low" viewBox="0 0 10 6" refX="10" refY="3" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3 L 0 6 Z" fill="#66bb6a"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <line x1="88" y1="250" x2="355" y2="250" stroke="#42a5f5" stroke-width="1.5" marker-end="url(#arrow-none)" opacity="0.8"/>
+  <text x="222" y="242" fill="#728da6" font-size="8" text-anchor="middle">43 findings</text>
+  <line x1="445" y1="250" x2="694" y2="80" stroke="#ffa726" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow-high)" opacity="0.8"/>
+  <text x="570" y="157" fill="#728da6" font-size="8" text-anchor="middle">3</text>
+  <line x1="445" y1="250" x2="694" y2="116" stroke="#ffd54f" stroke-width="1.5" marker-end="url(#arrow-medium)" opacity="0.8"/>
+  <text x="570" y="175" fill="#728da6" font-size="8" text-anchor="middle">2</text>
+  <line x1="445" y1="250" x2="694" y2="152" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="193" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="188" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="211" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="224" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="229" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="260" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="247" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="296" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="265" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="332" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="283" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="368" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="301" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <line x1="445" y1="250" x2="694" y2="404" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-low)" opacity="0.8"/>
+  <text x="570" y="319" fill="#728da6" font-size="8" text-anchor="middle">1</text>
+  <g transform="translate(60,250)" filter="url(#shadow)">
+    <rect x="-28" y="-22" width="56" height="44" rx="8" fill="#132337" stroke="#42a5f5" stroke-width="2"/>
+    <circle cx="0" cy="-4" r="10" fill="none" stroke="#42a5f5" stroke-width="1.5"/>
+    <line x1="0" y1="-4" x2="7" y2="-10" stroke="#42a5f5" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="0" cy="-4" r="3" fill="#42a5f5"/>
+    <text x="0" y="16" fill="#e0e6ed" font-size="7" text-anchor="middle" font-weight="600">SCANNER</text>
+  </g>
+  <g transform="translate(400,250)" filter="url(#shadow)">
+    <rect x="-44" y="-30" width="88" height="60" rx="6" fill="#132337" stroke="#ffa726" stroke-width="2"/>
+    <rect x="-32" y="-20" width="64" height="12" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="1"/>
+    <circle cx="-22" cy="-14" r="2" fill="#ffa726"/>
+    <circle cx="-16" cy="-14" r="2" fill="#1e3a5f"/>
+    <rect x="12" y="-17" width="18" height="6" rx="1" fill="#1e3a5f"/>
+    <rect x="-32" y="-4" width="64" height="12" rx="2" fill="#0d1b2a" stroke="#1e3a5f" stroke-width="1"/>
+    <circle cx="-22" cy="2" r="2" fill="#ffa726"/>
+    <circle cx="-16" cy="2" r="2" fill="#1e3a5f"/>
+    <rect x="12" y="-1" width="18" height="6" rx="1" fill="#1e3a5f"/>
+    <text x="0" y="24" fill="#e0e6ed" font-size="8" text-anchor="middle" font-weight="600">vapi</text>
+  </g>
+  <g transform="translate(700,80)">
+    <circle cx="0" cy="0" r="5" fill="#ffa726" opacity="0.9"/>
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#ffa726" stroke-width="1" opacity="0.4"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/Surfer...</text>
+  </g>
+  <g transform="translate(700,116)">
+    <circle cx="0" cy="0" r="5" fill="#ffd54f" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/API1Us...</text>
+  </g>
+  <g transform="translate(700,152)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/Surfer...</text>
+  </g>
+  <g transform="translate(700,188)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/API2Us...</text>
+  </g>
+  <g transform="translate(700,224)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Middleware/VerifyC...</text>
+  </g>
+  <g transform="translate(700,260)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/routes/web.php:16</text>
+  </g>
+  <g transform="translate(700,296)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">D:\GoProscan\test-repos\github\v...</text>
+  </g>
+  <g transform="translate(700,332)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/API2Us...</text>
+  </g>
+  <g transform="translate(700,368)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/Sticky...</text>
+  </g>
+  <g transform="translate(700,404)">
+    <circle cx="0" cy="0" r="5" fill="#66bb6a" opacity="0.9"/>
+    <text x="12" y="4" fill="#c0cad8" font-size="8" font-family="'Fira Code','Consolas',monospace">vapi/app/Http/Controllers/API4Us...</text>
+  </g>
+  <g transform="translate(20,450)">
+    <text x="0" y="0" fill="#728da6" font-size="10" font-weight="600" text-anchor="start">LEGEND</text>
+    <circle cx="10" cy="16" r="5" fill="#42a5f5"/><text x="20" y="20" fill="#728da6" font-size="9">Scanner</text>
+    <rect x="65" y="11" width="10" height="10" rx="2" fill="#1e88e5"/><text x="80" y="20" fill="#728da6" font-size="9">Server</text>
+    <circle cx="140" cy="16" r="5" fill="#66bb6a"/><text x="150" y="20" fill="#728da6" font-size="9">Safe Endpoint</text>
+    <circle cx="240" cy="16" r="5" fill="#ef5350"/><text x="250" y="20" fill="#728da6" font-size="9">Vulnerable</text>
+    <line x1="320" y1="16" x2="350" y2="16" stroke="#ef5350" stroke-width="2" stroke-dasharray="4,2"/><text x="355" y="20" fill="#728da6" font-size="9">Attack Path</text>
+  </g>
+</svg>
+  </div>
+</div>
+<div class="section">
+  <h2>Methodology &amp; Scoring</h2>
+  <div class="method-grid">
+    <div class="method-box">
+      <h4>Analysis Approach</h4>
+      <p>Static Application Security Testing (SAST) analyzes source code, bytecode, and binary code for security vulnerabilities without executing the application. Pattern matching, taint analysis, and data-flow analysis identify potential weaknesses at the code level.</p>
+    </div>
+    <div class="method-box">
+      <h4>Severity Classification</h4>
+      <ul>
+        <li><strong style="color:var(--crit)">Critical</strong> &mdash; CVSS 9.0&ndash;10.0</li>
+        <li><strong style="color:var(--high)">High</strong> &mdash; CVSS 7.0&ndash;8.9</li>
+        <li><strong style="color:var(--med)">Medium</strong> &mdash; CVSS 4.0&ndash;6.9</li>
+        <li><strong style="color:var(--low)">Low</strong> &mdash; CVSS 0.1&ndash;3.9</li>
+      </ul>
+    </div>
+    <div class="method-box">
+      <h4>Risk Score Methodology</h4>
+      <p>Risk score (0&ndash;100) is computed from weighted severity counts, exploit maturity, EPSS probability, affected surface area, and patch availability. Higher scores indicate greater risk.</p>
+    </div>
+    <div class="method-box">
+      <h4>Standards &amp; References</h4>
+      <ul>
+        <li><a href="https://cwe.mitre.org/" target="_blank" rel="noopener">MITRE CWE</a> &mdash; Common Weakness Enumeration</li>
+        <li><a href="https://owasp.org/Top10/" target="_blank" rel="noopener">OWASP Top 10</a> &mdash; Web Application Security Risks</li>
+        <li><a href="https://www.first.org/cvss/" target="_blank" rel="noopener">CVSS v3.1</a> &mdash; Common Vulnerability Scoring System</li>
+        <li><a href="https://www.first.org/epss/" target="_blank" rel="noopener">EPSS</a> &mdash; Exploit Prediction Scoring System</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <h2>Visualizations</h2>
+  <div class="chart-row">
+    <div class="chart-card">
+      <h4>Severity Distribution</h4>
+<svg viewBox="0 0 200 200" width="220" height="220"><path d="M 100.00 20.00 A 80.00 80.00 0 1 1 55.86 33.28 L 100.00 100.00 Z" fill="#ffa726" stroke="#0a1929" stroke-width="2"/><path d="M 55.86 33.28 A 80.00 80.00 0 0 1 100.00 20.00 L 100.00 100.00 Z" fill="#66bb6a" stroke="#0a1929" stroke-width="2"/><circle cx="100" cy="100" r="52" fill="#0d1b2a"/><text x="100" y="92" text-anchor="middle" dominant-baseline="central" fill="#e0e6ed" font-size="28" font-weight="bold">43</text><text x="100" y="114" text-anchor="middle" dominant-baseline="central" fill="#728da6" font-size="11">findings</text></svg><div style="margin-top:1rem;text-align:left"><div style="display:flex;align-items:center;gap:6px;margin:3px 0;font-size:0.8rem"><div style="width:10px;height:10px;border-radius:2px;background:#ef5350"></div><span style="color:var(--muted)">Critical</span><span style="margin-left:auto;font-weight:600">0</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0;font-size:0.8rem"><div style="width:10px;height:10px;border-radius:2px;background:#ffa726"></div><span style="color:var(--muted)">High</span><span style="margin-left:auto;font-weight:600">39</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0;font-size:0.8rem"><div style="width:10px;height:10px;border-radius:2px;background:#ffd54f"></div><span style="color:var(--muted)">Medium</span><span style="margin-left:auto;font-weight:600">0</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0;font-size:0.8rem"><div style="width:10px;height:10px;border-radius:2px;background:#66bb6a"></div><span style="color:var(--muted)">Low</span><span style="margin-left:auto;font-weight:600">4</span></div><div style="display:flex;align-items:center;gap:6px;margin:3px 0;font-size:0.8rem"><div style="width:10px;height:10px;border-radius:2px;background:#5bb5f5"></div><span style="color:var(--muted)">Info</span><span style="margin-left:auto;font-weight:600">0</span></div></div>
+    </div>
+    <div class="chart-card">
+      <h4>Severity Breakdown</h4>
+<svg viewBox="0 0 300 200" width="300" height="200"><text x="58" y="23" text-anchor="end" fill="#728da6" font-size="11" dominant-baseline="central">Critical</text><rect x="65" y="10" width="180" height="26" rx="4" fill="#1e3a5f"/><text x="253" y="23" fill="#e0e6ed" font-size="11" font-weight="600" dominant-baseline="central">0</text><text x="58" y="57" text-anchor="end" fill="#728da6" font-size="11" dominant-baseline="central">High</text><rect x="65" y="44" width="180" height="26" rx="4" fill="#1e3a5f"/><rect x="65" y="44" width="180" height="26" rx="4" fill="#ffa726"/><text x="253" y="57" fill="#e0e6ed" font-size="11" font-weight="600" dominant-baseline="central">39</text><text x="58" y="91" text-anchor="end" fill="#728da6" font-size="11" dominant-baseline="central">Medium</text><rect x="65" y="78" width="180" height="26" rx="4" fill="#1e3a5f"/><text x="253" y="91" fill="#e0e6ed" font-size="11" font-weight="600" dominant-baseline="central">0</text><text x="58" y="125" text-anchor="end" fill="#728da6" font-size="11" dominant-baseline="central">Low</text><rect x="65" y="112" width="180" height="26" rx="4" fill="#1e3a5f"/><rect x="65" y="112" width="18" height="26" rx="4" fill="#66bb6a"/><text x="253" y="125" fill="#e0e6ed" font-size="11" font-weight="600" dominant-baseline="central">4</text><text x="58" y="159" text-anchor="end" fill="#728da6" font-size="11" dominant-baseline="central">Info</text><rect x="65" y="146" width="180" height="26" rx="4" fill="#1e3a5f"/><text x="253" y="159" fill="#e0e6ed" font-size="11" font-weight="600" dominant-baseline="central">0</text></svg>
+    </div>
+    <div class="chart-card">
+      <h4>Risk Score</h4>
+<svg viewBox="0 0 200 130" width="220" height="143"><path d="M 15.00 110.00 A 85.00 85.00 0 0 1 50.04 41.23" fill="none" stroke="#66bb6a" stroke-width="16" stroke-linecap="butt" opacity="0.3"/><path d="M 50.04 41.23 A 85.00 85.00 0 0 1 100.00 25.00" fill="none" stroke="#ffd54f" stroke-width="16" stroke-linecap="butt" opacity="0.3"/><path d="M 100.00 25.00 A 85.00 85.00 0 0 1 149.96 41.23" fill="none" stroke="#ffa726" stroke-width="16" stroke-linecap="butt" opacity="0.3"/><path d="M 149.96 41.23 A 85.00 85.00 0 0 1 185.00 110.00" fill="none" stroke="#ef5350" stroke-width="16" stroke-linecap="butt" opacity="0.3"/><path d="M 15.00 110.00 A 85.00 85.00 0 1 1 185.00 110.00" fill="none" stroke="#ef5350" stroke-width="16" stroke-linecap="round"/><text x="100" y="100" text-anchor="middle" fill="#ef5350" font-size="32" font-weight="bold">100</text><text x="100" y="120" text-anchor="middle" fill="#728da6" font-size="11">/100</text><text x="22" y="118" text-anchor="middle" fill="#728da6" font-size="9">0</text><text x="178" y="118" text-anchor="middle" fill="#728da6" font-size="9">100</text></svg><div style="margin-top:0.75rem;font-weight:700;color:#ef5350">CRITICAL RISK</div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <h2>Prioritized Remediation Plan</h2>
+  <table>
+    <thead><tr>
+      <th style="width:50px">#</th>
+      <th>Action Item</th>
+      <th>Description</th>
+      <th style="width:60px">Effort</th>
+      <th style="width:70px">Impact</th>
+      <th style="width:70px">Findings</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td>1</td>
+      <td><strong>Remediate High Severity Findings</strong></td>
+      <td style="color:var(--muted);font-size:0.85rem">Resolve 39 high severity findings within the current sprint. These are exploitable vulnerabilities with significant impact.</td>
+      <td style="text-align:center">🏗 High</td>
+      <td><span class="badge b-high">High</span></td>
+      <td style="text-align:center;font-weight:700">39</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Address Top CWE: CWE-639 (Authorization Bypass Through User-Controlled Key)</strong></td>
+      <td style="color:var(--muted);font-size:0.85rem">The most frequently occurring weakness is CWE-639 (Authorization Bypass Through User-Controlled Key). Consider targeted developer training and code review focused on this category.</td>
+      <td style="text-align:center">🛠 Medium</td>
+      <td><span class="badge b-high">High</span></td>
+      <td style="text-align:center;font-weight:700">0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Review Low Severity Findings</strong></td>
+      <td style="color:var(--muted);font-size:0.85rem">Review 4 low severity findings and address as part of ongoing code quality improvements.</td>
+      <td style="text-align:center">⚡ Low</td>
+      <td><span class="badge b-low">Low</span></td>
+      <td style="text-align:center;font-weight:700">4</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="section">
+  <h2>OWASP Top 10 (2021) Compliance Mapping</h2>
+  <table>
+    <thead><tr>
+      <th>Category</th>
+      <th style="width:80px">Findings</th>
+      <th style="width:100px">Status</th>
+      <th style="width:120px">Worst Severity</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td><strong>A01</strong> Broken Access Control</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A02</strong> Cryptographic Failures</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A03</strong> Injection</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A04</strong> Insecure Design</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A05</strong> Security Misconfiguration</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A06</strong> Vulnerable and Outdated Components</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A07</strong> Identification and Authentication Failures</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A08</strong> Software and Data Integrity Failures</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A09</strong> Security Logging and Monitoring Failures</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    <tr>
+      <td><strong>A10</strong> Server-Side Request Forgery (SSRF)</td>
+      <td style="text-align:center;font-weight:700">0</td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:700">&#10003; PASS</span></td>
+      <td style="text-align:center"><span style="color:var(--muted)">-</span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="section">
+  <h2>CWE Breakdown</h2>
+  <table>
+    <thead><tr>
+      <th>CWE ID</th>
+      <th>Vulnerability Name</th>
+      <th>OWASP Category</th>
+      <th style="width:60px">Count</th>
+      <th style="width:140px">Distribution</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener"><code>CWE-639</code></a></td>
+      <td>Authorization Bypass Through User-Controlled Key</td>
+      <td><span class="badge b-info">A01</span></td>
+      <td style="text-align:center;font-weight:700">7</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:100%;background:#ef5350"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">Authorization Bypass Through User-Controlled Key &mdash; 7 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener"><code>CWE-307</code></a></td>
+      <td></td>
+      <td><span class="badge b-info">A07</span></td>
+      <td style="text-align:center;font-weight:700">6</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:86%;background:#ef5350"></div></div></td>
+    </tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener"><code>CWE-306</code></a></td>
+      <td></td>
+      <td><span class="badge b-info">A07</span></td>
+      <td style="text-align:center;font-weight:700">6</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:86%;background:#ef5350"></div></div></td>
+    </tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener"><code>CWE-352</code></a></td>
+      <td>Cross-Site Request Forgery (CSRF)</td>
+      <td><span class="badge b-info">A01</span></td>
+      <td style="text-align:center;font-weight:700">4</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:57%;background:#ffa726"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">Cross-Site Request Forgery (CSRF) &mdash; 4 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/22.html" target="_blank" rel="noopener"><code>CWE-22</code></a></td>
+      <td>Improper Limitation of a Pathname to a Restricted Directory</td>
+      <td><span class="badge b-info">A01</span></td>
+      <td style="text-align:center;font-weight:700">3</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:43%;background:#ffa726"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">Improper Limitation of a Pathname to a Restricted Directory &mdash; 3 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener"><code>CWE-78</code></a></td>
+      <td>OS Command Injection</td>
+      <td><span class="badge b-info">A03</span></td>
+      <td style="text-align:center;font-weight:700">3</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:43%;background:#ffa726"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">OS Command Injection &mdash; 3 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/601.html" target="_blank" rel="noopener"><code>CWE-601</code></a></td>
+      <td>URL Redirection to Untrusted Site</td>
+      <td><span class="badge b-info">A01</span></td>
+      <td style="text-align:center;font-weight:700">2</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:29%;background:#ffd54f"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">URL Redirection to Untrusted Site &mdash; 2 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/770.html" target="_blank" rel="noopener"><code>CWE-770</code></a></td>
+      <td></td>
+      <td><span style="color:var(--muted)">-</span></td>
+      <td style="text-align:center;font-weight:700">2</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:29%;background:#ffd54f"></div></div></td>
+    </tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/915.html" target="_blank" rel="noopener"><code>CWE-915</code></a></td>
+      <td>Improperly Controlled Modification of Dynamically-Determined Object Attributes</td>
+      <td><span class="badge b-info">A08</span></td>
+      <td style="text-align:center;font-weight:700">2</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:29%;background:#ffd54f"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">Improperly Controlled Modification of Dynamically-Determined Object Attributes &mdash; 2 occurrence(s)</td></tr>
+    <tr>
+      <td><a href="https://cwe.mitre.org/data/definitions/693.html" target="_blank" rel="noopener"><code>CWE-693</code></a></td>
+      <td>Protection Mechanism Failure</td>
+      <td><span style="color:var(--muted)">-</span></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar"><div class="pbar-fill" style="width:14%;background:#42a5f5"></div></div></td>
+    </tr>
+    <tr><td colspan="5" class="cwe-desc">Protection Mechanism Failure &mdash; 1 occurrence(s)</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="section">
+  <h2>Detailed Findings</h2>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#1</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API9UsersController.php:10</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API9UsersController.php line 10</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API9UsersController extends Controller
+{
+    public function login(Request $request)
+    {
+        return API9Users::where(&#39;username&#39;,$request-&gt;input(&#39;username&#39;))-&gt;where(&#39;pin&#39;,$request-&gt;input(&#39;pin&#39;))-&gt;first();</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#2</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">CWE-352-PH-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">CWE-352</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/EncryptCookies.php:14</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>CWE-352 in php: Laravel VerifyCsrfToken excluded</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/EncryptCookies.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>     * @var array
+     */
+    protected $except = [
+        //
+    ];</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/352.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#3</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">CWE-352-PH-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">CWE-352</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/PreventRequestsDuringMaintenance...</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>CWE-352 in php: Laravel VerifyCsrfToken excluded</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/PreventRequestsDuringMaintenance.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>     * @var array
+     */
+    protected $except = [
+        //
+    ];</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/352.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#4</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">ast-redirect-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/601.html" target="_blank" rel="noopener">CWE-601</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/Authenticate.php:15</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Open redirect via user-controlled URL</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/Authenticate.php line 15</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    protected function redirectTo($request)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#5</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">CWE-352-PH-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">CWE-352</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/TrimStrings.php:14</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>CWE-352 in php: Laravel VerifyCsrfToken excluded</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/TrimStrings.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>     * @var array
+     */
+    protected $except = [
+        &#39;current_password&#39;,
+        &#39;password&#39;,</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/352.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#6</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API3UsersController.php:10</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API3UsersController.php line 10</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API3UsersController extends Controller
+{
+    public function login(Request $request)
+    {
+</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#7</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">CWE-352-PH-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">CWE-352</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/VerifyCsrfToken.php:14</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>CWE-352 in php: Laravel VerifyCsrfToken excluded</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/VerifyCsrfToken.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>     * @var array
+     */
+    protected $except = [
+        //
+    ];</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/352.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/352.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#8</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">ast-redirect-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/601.html" target="_blank" rel="noopener">CWE-601</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Middleware/RedirectIfAuthenticated.php:26</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Open redirect via user-controlled URL</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Middleware/RedirectIfAuthenticated.php line 26</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>                return redirect(RouteServiceProvider::HOME);</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#9</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API8UsersController.php:14</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API8UsersController.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>
+
+    public function login(Request $request)
+    {
+        $user = DB::table(&#39;a_p_i8_users&#39;)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#10</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">LAR-WHERERAW-H-raw_concat-0001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/89.html" target="_blank" rel="noopener">CWE-89</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A03:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API8UsersController.php:18</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel Eloquent whereRaw Injection: whereRaw with variable concatenation (ERROR)</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API8UsersController.php line 18</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>        $user = DB::table(&#39;a_p_i8_users&#39;)
+                    -&gt;select(&#39;username&#39;,&#39;authkey&#39;)
+                    -&gt;whereRaw(&#34;username=&#39;&#34;.$request-&gt;input(&#39;username&#39;).&#34;&#39; AND password=&#39;&#34;.$request-&gt;input(&#39;password&#39;).&#34;&#39;&#34;)
+                    -&gt;first();
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/89.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/89.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#11</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">LAR-MASSASGN-H-fill_sens-0151</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/915.html" target="_blank" rel="noopener">CWE-915</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A08:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Models/API8Users.php:13</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel Mass Assignment fillable: Sensitive fields in fillable array (ERROR)</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Models/API8Users.php line 13</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>
+    public $timestamps = false;
+    protected $fillable = [&#39;username&#39;,&#39;password&#39;,&#39;authkey&#39;,&#39;secret&#39;];
+    protected $hidden = [&#39;password&#39;,&#39;authkey&#39;];
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/915.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/915.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#12</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.php.taint.path</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/22.html" target="_blank" rel="noopener">CWE-22</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A03:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/SurferController.php:17</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>PHP Path Traversal/LFI via tainted data</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/SurferController.php line 17</p>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#13</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.php.taint.advanced.path_traversal</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/22.html" target="_blank" rel="noopener">CWE-22</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A03:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">D:\GoProscan\test-repos\github\vapi\vapi\app\Http\Control...</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Interprocedural Taint: path_traversal reaches dangerous sink</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at D:\GoProscan\test-repos\github\vapi\vapi\app\Http\Controllers\SurferController.php line 14</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>$url = $request-&gt;input(&#39;url&#39;); → $data=file_get_contents($url);</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#14</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">SSRFD2-CMA-PH-USU-0247</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/611.html" target="_blank" rel="noopener">CWE-611</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A10:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/SurferController.php:17</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Cloud metadata access: url-scheme-unrestricted in php</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/SurferController.php line 17</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>            if(!strpos($url,&#34;127.0.0.1&#34;) &amp;&amp; !strpos($url,&#34;localhost&#34;))
+            {
+                $data=file_get_contents($url);
+                return response(json_encode(array(&#34;success&#34;=&gt;&#34;true&#34;,&#34;data&#34;=&gt;base64_encode($data))), 200)
+                -&gt;header(&#39;Content-Type&#39;, &#39;application/json&#39;);</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/611.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/611.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/918.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/918.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#15</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/SurferController.php:10</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/SurferController.php line 10</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class SurferController extends Controller
+{
+    public function show(Request $request)
+    {
+        if($request-&gt;input(&#39;url&#39;)!=&#34;&#34;)</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#16</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">MLT-PHP-22-LINP-FCALL-PHFGC</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/22.html" target="_blank" rel="noopener">CWE-22</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/SurferController.php:13</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[PHP] $request-&gt;input → function call → file_get_contents (multi-line flow)</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/SurferController.php line 13</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    {
+        if($request-&gt;input(&#39;url&#39;)!=&#34;&#34;)
+        {
+            $url = $request-&gt;input(&#39;url&#39;);
+            if(!strpos($url,&#34;127.0.0.1&#34;) &amp;&amp; !strpos($url,&#34;localhost&#34;))</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/22.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/22.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#17</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.php.taint.ssrf</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/918.html" target="_blank" rel="noopener">CWE-918</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A03:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/SurferController.php:17</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] PHP SSRF via tainted data</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/SurferController.php line 17</p>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#18</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">LAR-MASSASGN-H-fill_sens-0151</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/915.html" target="_blank" rel="noopener">CWE-915</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A08:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Models/JustWeakTokens.php:13</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel Mass Assignment fillable: Sensitive fields in fillable array (ERROR)</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Models/JustWeakTokens.php line 13</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    protected $table = &#39;justweaktokens&#39;;
+    public $timestamps = false;
+    protected $fillable = [&#39;username&#39;,&#39;password&#39;];
+    protected $hidden = [&#39;password&#39;];
+}</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/915.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/915.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#19</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API6UsersController.php:12</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API6UsersController.php line 12</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API6UsersController extends Controller
+{
+    public function show(Request $request)
+    {
+        if($request-&gt;hasHeader(&#39;Authorization-Token&#39;) &amp;&amp; $request-&gt;header(&#39;Authorization-Token&#39;)!=&#34;&#34; )</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#20</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API2UsersController.php:10</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API2UsersController.php line 10</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API2UsersController extends Controller
+{
+    public function login(Request $request)
+    {
+</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#21</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API2UsersController.php:29</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API2UsersController.php line 29</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    }
+
+    public function show(Request $request)
+    {
+        if($request-&gt;hasHeader(&#39;Authorization-Token&#39;) &amp;&amp; $request-&gt;header(&#39;Authorization-Token&#39;)!=&#34;&#34; )</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#22</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/StickyNotesController.php:22</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/StickyNotesController.php line 22</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    }
+
+    public function show(Request $request)
+    {
+        if($request-&gt;input(&#39;format&#39;)!=&#34;&#34;)</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#23</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.php.taint.header</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/113.html" target="_blank" rel="noopener">CWE-113</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A03:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/StickyNotesController.php:60</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>PHP Header Injection via tainted data</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/StickyNotesController.php line 60</p>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#24</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">FW-LARAVEL-006</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API1UsersController.php:52</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel: Route model binding without authorization</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API1UsersController.php line 52</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    }
+
+    public function update(Request $request, $id)
+    {
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://laravel.com/docs/11.x/authorization" target="_blank" rel="noopener">https://laravel.com/docs/11.x/authorization</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#25</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">CWEX-306-NOAUTH-PH-002</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API1UsersController.php:52</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Critical endpoint without authentication in php</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API1UsersController.php line 52</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    }
+
+    public function update(Request $request, $id)
+    {
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/306.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#26</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API4UsersController.php:11</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API4UsersController.php line 11</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API4UsersController extends Controller
+{
+    public function login(Request $request)
+    {
+</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#27</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API4UsersController.php:53</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API4UsersController.php line 53</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>
+
+    public function show(Request $request)
+    {
+        if($request-&gt;hasHeader(&#39;Authorization-Token&#39;) &amp;&amp; $request-&gt;header(&#39;Authorization-Token&#39;)!=&#34;&#34; )</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#28</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">API-REST-PHP-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/routes/web.php:16</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Missing Auth Middleware in Laravel</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/routes/web.php line 16</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>*/
+
+Route::get(&#39;/&#39;, function () {
+    return view(&#39;welcome&#39;);
+});</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener">https://owasp.org/API-Security/editions/2023/en...</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#29</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">API-REST-PHP-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/routes/web.php:20</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Missing Auth Middleware in Laravel</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/routes/web.php line 20</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>});
+
+Route::get(&#39;/vapi&#39;, function () {
+    return view(&#39;index&#39;);
+});</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener">https://owasp.org/API-Security/editions/2023/en...</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#30</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.deep.sess004</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 700</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/613.html" target="_blank" rel="noopener">CWE-613</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API7UsersController.php:46</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Session not destroyed on server side during logout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API7UsersController.php line 46</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>    }
+
+    public function logout(Request $request)
+    {
+        session_start();</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration" target="_blank" rel="noopener">https://cheatsheetseries.owasp.org/cheatsheets/...</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#31</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.auth.no-lockout</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/307.html" target="_blank" rel="noopener">CWE-307</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A07:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/API7UsersController.php:12</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Login without account lockout</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/API7UsersController.php line 12</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class API7UsersController extends Controller
+{
+    public function login(Request $request)
+    {
+        if($request-&gt;hasHeader(&#39;Authorization-Token&#39;) &amp;&amp; $request-&gt;header(&#39;Authorization-Token&#39;)!=&#34;&#34; )</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#32</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">ast-race-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/367.html" target="_blank" rel="noopener">CWE-367</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A04:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/server.php:17</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Time-of-check to time-of-use (TOCTOU) race condition</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/server.php line 17</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>if ($uri !== &#39;/&#39; &amp;&amp; file_exists(__DIR__.&#39;/public&#39;.$uri)) {</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#33</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">AUTHD2-HCC-PH-JNA-0127</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/20.html" target="_blank" rel="noopener">CWE-20</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/JustWeakTokenController.php:25</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Hardcoded credentials: jwt-none-algorithm-accept in php</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/JustWeakTokenController.php line 25</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>            try{
+
+                $decoded = (array) JWT::decode($token, $key, array(&#39;HS256&#39;,&#39;none&#39;));
+
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/20.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/20.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/269.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/269.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/284.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/284.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/308.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/308.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/326.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/326.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/330.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/330.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/345.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/345.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/384.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/384.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/521.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/521.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/522.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/522.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/532.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/532.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/598.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/598.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/601.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/601.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/613.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/613.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/614.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/614.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/798.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/798.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/862.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/862.html</a>
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/863.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/863.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#34</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">PHP-LARAVEL-124</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">CWE-639</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/app/Http/Controllers/JustWeakTokenController.php:15</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Laravel route model binding without scope</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/app/Http/Controllers/JustWeakTokenController.php line 15</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>class JustWeakTokenController extends Controller
+{
+    public function show(Request $request)
+    {
+        if($request-&gt;hasHeader(&#39;Authorization-Token&#39;) &amp;&amp; $request-&gt;header(&#39;Authorization-Token&#39;)!=&#34;&#34; )</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/639.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/639.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#35</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.k8s.no-resource-limits</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/770.html" target="_blank" rel="noopener">CWE-770</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi-chart/templates/hpa.yaml:11</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Kubernetes pod without resource limits</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi-chart/templates/hpa.yaml line 11</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include &#34;vapi.fullname&#34; . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#36</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.k8s.no-resource-limits</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/770.html" target="_blank" rel="noopener">CWE-770</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi-chart/templates/deployment.yaml:2</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Kubernetes pod without resource limits</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi-chart/templates/deployment.yaml line 2</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include &#34;vapi.fullname&#34; . }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #66bb6a">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#37</span>
+        <span class="badge b-low">LOW</span>
+        <span class="f-title" style="margin-left:0.5rem">IAC-DOCKER-DFSHELL-395</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 260</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">CWE-78</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">2.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">Dockerfile:2</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[DOCKER] BestPractice: Dockerfile RUN uses shell form</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Minimal security impact.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at Dockerfile line 2</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>FROM php:7.4-apache 
+RUN docker-php-ext-install mysqli pdo_mysql
+RUN apt-get update \
+    &amp;&amp; apt-get install -y libzip-dev \</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/78.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #66bb6a">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#38</span>
+        <span class="badge b-low">LOW</span>
+        <span class="f-title" style="margin-left:0.5rem">IAC-DOCKER-DFSHELL-395</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 260</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">CWE-78</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">2.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">Dockerfile:12</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[DOCKER] BestPractice: Dockerfile RUN uses shell form</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Minimal security impact.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at Dockerfile line 12</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>COPY ./vapi /var/www/html/vapi
+
+RUN rm /var/www/html/vapi/.env
+
+RUN echo &#34;flag{ssrf_e0pgt3az9zeqdd4fhatc}&#34; &gt; /flag.txt</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/78.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #66bb6a">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#39</span>
+        <span class="badge b-low">LOW</span>
+        <span class="f-title" style="margin-left:0.5rem">IAC-DOCKER-DFSHELL-395</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 260</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">CWE-78</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">2.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">Dockerfile:3</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[DOCKER] BestPractice: Dockerfile RUN uses shell form</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Minimal security impact.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at Dockerfile line 3</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>FROM php:7.4-apache 
+RUN docker-php-ext-install mysqli pdo_mysql
+RUN apt-get update \
+    &amp;&amp; apt-get install -y libzip-dev \
+    &amp;&amp; apt-get install -y zlib1g-dev \</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://cwe.mitre.org/data/definitions/78.html" target="_blank" rel="noopener">https://cwe.mitre.org/data/definitions/78.html</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #66bb6a">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#40</span>
+        <span class="badge b-low">LOW</span>
+        <span class="f-title" style="margin-left:0.5rem">goproscan.docker.no-healthcheck</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 260</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/693.html" target="_blank" rel="noopener">CWE-693</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">2.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A05:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">Dockerfile:1</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>[CORRELATED:regex+handcrafted] Dockerfile without HEALTHCHECK</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Minimal security impact.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at Dockerfile line 1</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>FROM php:7.4-apache 
+RUN docker-php-ext-install mysqli pdo_mysql
+RUN apt-get update \</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#41</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">API-REST-PHP-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/routes/api.php:34</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Missing Auth Middleware in Laravel</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/routes/api.php line 34</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>Route::get(&#39;api1/user/{id}&#39;,&#39;App\Http\Controllers\API1UsersController@show&#39;);
+
+Route::post(&#39;api1/user&#39;,&#39;App\Http\Controllers\API1UsersController@store&#39;);
+
+Route::put(&#39;api1/user/{id}&#39;,&#39;App\Http\Controllers\API1UsersController@update&#39;);</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener">https://owasp.org/API-Security/editions/2023/en...</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#42</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">API-REST-PHP-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/routes/api.php:27</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Missing Auth Middleware in Laravel</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/routes/api.php line 27</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>/* Flag Submit Dashboard */
+
+Route::get(&#39;dashboard/flag&#39;,&#39;App\Http\Controllers\FlagController@verify&#39;);
+
+</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener">https://owasp.org/API-Security/editions/2023/en...</a>
+      </div>
+    </div>
+  </div>
+  <div class="finding" style="border-left:4px solid #ffa726">
+    <div class="finding-head">
+      <div>
+        <span class="f-idx">#43</span>
+        <span class="badge b-high">HIGH</span>
+        <span class="f-title" style="margin-left:0.5rem">API-REST-PHP-001</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap"><span class="priority-badge">Priority: 610</span>
+      </div>
+    </div>
+    <div class="finding-body">
+      <div class="f-meta">
+        <div><span class="fm-lbl">CWE</span><span class="fm-val"><a href="https://cwe.mitre.org/data/definitions/306.html" target="_blank" rel="noopener">CWE-306</a></span></div>
+        <div><span class="fm-lbl">CVSS</span><span class="fm-val">7.5</span></div>
+        <div><span class="fm-lbl">EPSS</span><span class="fm-val">0.0%</span></div>
+        <div><span class="fm-lbl">OWASP</span><span class="fm-val">A01:2021</span></div>
+        <div><span class="fm-lbl">Location</span><span class="fm-val" style="font-size:0.8rem">vapi/routes/api.php:32</span></div>
+        <div><span class="fm-lbl">Attack Vector</span><span class="fm-val">N/A</span></div>
+      </div>
+      <div class="vuln-detail">
+        <h4>Vulnerability Detail</h4>
+        <p>Missing Auth Middleware in Laravel</p>
+        <p style="margin-top:0.5rem"><strong>Impact:</strong> Significant impact on confidentiality and integrity.</p>
+      </div>
+      <div class="vuln-detail">
+        <h4>Technical Explanation</h4>
+        <p>Vulnerable code pattern detected at vapi/routes/api.php line 32</p>
+        <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--muted);font-size:0.85rem">
+          <li>/* API 1 */
+
+Route::get(&#39;api1/user/{id}&#39;,&#39;App\Http\Controllers\API1UsersController@show&#39;);
+
+Route::post(&#39;api1/user&#39;,&#39;App\Http\Controllers\API1UsersController@store&#39;);</li>
+        </ul>
+      </div>
+      <div class="ref-row">
+        <a class="ref-link" href="https://owasp.org/API-Security/editions/2023/en/0xa2-broken-authentication/" target="_blank" rel="noopener">https://owasp.org/API-Security/editions/2023/en...</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section">
+  <h2>File / Component Distribution</h2>
+  <table>
+    <thead><tr>
+      <th>File Path</th>
+      <th style="width:80px">Findings</th>
+      <th style="width:160px">Distribution</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/SurferController.php:17</code></td>
+      <td style="text-align:center;font-weight:700">3</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:100%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/API1UsersController.php:52</code></td>
+      <td style="text-align:center;font-weight:700">2</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:67%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/SurferController.php:13</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/API2UsersController.php:29</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Middleware/VerifyCsrfToken.php:14</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/routes/web.php:16</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>D:\GoProscan\test-repos\github\vapi\vapi\app\Http\Controllers\SurferControlle...</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/API2UsersController.php:10</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/StickyNotesController.php:22</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    <tr>
+      <td><code>vapi/app/Http/Controllers/API4UsersController.php:11</code></td>
+      <td style="text-align:center;font-weight:700">1</td>
+      <td><div class="pbar" style="width:140px"><div class="pbar-fill" style="width:33%;background:var(--accent)"></div></div></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="report-footer">
+  <p>Generated by <strong>GoProscan 9.0</strong> &bull; March 25, 2026 at 00:17 UTC &bull; Scan ID: sast-vapi-1774423024</p>
+  <p style="margin-top:0.5rem;font-size:0.8rem;color:var(--muted)">GoProscan Security Scanner &mdash; Enterprise Edition</p>
+  <p style="margin-top:0.5rem;font-size:0.75rem;color:var(--muted)">This report is confidential and intended for authorized recipients only.</p>
+</div>
+</div>
+</body>
+</html>
